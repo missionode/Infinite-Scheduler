@@ -41,7 +41,20 @@
                     </tbody>
             </table>
         </div>
+
+        
+
+
+        <button id="export-bookings" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Download Backup Now</button>
     </div>
+
+    <div style="min-height: inherit" class="mdl-card mdl-shadow--2dp bookings-card">
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+        <button id="import-bookings" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Install Backup Now</button>
+    </div>
+
+    
+    
     <script >
       const bookingsTableBody = document.getElementById('bookings-table-body');
 
@@ -84,7 +97,96 @@ function displayCurrentMonthBookings() {
 }
 
 
+// time stamp for export
+function getCurrentDateTime() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
+
+const exportButton = document.getElementById('export-bookings');
+
+exportButton.addEventListener('click', () => {
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    const bookingsJSON = JSON.stringify(bookings);
+
+    const blob = new Blob([bookingsJSON], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+
+
+    const timestamp = getCurrentDateTime();
+
+
+    a.download = 'bookings-'+timestamp+'.json'
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Clean up
+});
+
+
+
+//Import bookings 
+
+const importButton = document.getElementById('import-bookings');
+const importFile = document.getElementById('import-file');
+
+importButton.addEventListener('click', () => {
+    importFile.click(); // Trigger the file input dialog
+});
+
+importFile.addEventListener('change', () => {
+    const file = importFile.files[0];
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            try {
+                const importedBookings = JSON.parse(event.target.result);
+
+                // Basic validation (optional, but recommended)
+                if (Array.isArray(importedBookings)) {
+                    // Overwrite existing bookings (or merge, if you prefer)
+                    localStorage.setItem('bookings', JSON.stringify(importedBookings));
+                    alert("Bookings imported successfully!");
+                    displayCurrentMonthBookings(); // Refresh the table
+                } else {
+                    alert("Invalid import file. Please select a valid bookings JSON file.");
+                }
+
+            } catch (error) {
+                alert("Error importing bookings. Please check the file format.");
+                console.error("Import error:", error);
+            }
+        };
+
+        reader.readAsText(file);
+        importFile.value = ''; // Reset the file input
+    }
+});
+
+
+
 displayCurrentMonthBookings(); // Call the function to display bookings when the page loads
+
+
+
+
+
+
+
     </script>
 </body>
 </html>

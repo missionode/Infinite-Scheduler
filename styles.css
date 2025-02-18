@@ -93,3 +93,18 @@
 #confirmation-message {
   text-align: center;
 }
+
+.help {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.courtesy {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 125px;
+    justify-content: space-between;
+    margin: 200px auto 20px auto;
+}
