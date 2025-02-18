@@ -1,5 +1,5 @@
 #calendar-container {
-    width: 400px; /* Adjust as needed */
+    width: 100%; /* Adjust as needed */
     margin: 20px auto;
 }
 
@@ -15,6 +15,7 @@
     grid-template-columns: repeat(7, 1fr); /* 7 days a week */
     gap: 4px; /* Adjust spacing */
     padding: 8px;
+    width: 100%;
 }
 
 .day-name {
@@ -65,7 +66,7 @@
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000; /* Ensure it's on top of other elements */
-    width: 400px; /* Or adjust as needed */
+    width: 90%; /* Or adjust as needed */
     max-height: 100%;
     overflow: scroll;
 }
