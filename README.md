@@ -47,13 +47,9 @@ This is a simple scheduler calendar application that allows users to book appoin
 
 ├── index.html         // Main calendar page
 ├── bookings.html      // Current month bookings page
-├── script.js          // JavaScript code
-└── style.css          // CSS styles
+├── app.js          // JavaScript code
+└── styles.css          // CSS styles
 
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-
-[MIT](LICENSE) 
