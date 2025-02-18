@@ -53,3 +53,8 @@ This is a simple scheduler calendar application that allows users to book appoin
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
+
+## Demo 
+
+Main Calendar: https://missionode.github.io/Infinite-Scheduler/
+Bookings Page: https://missionode.github.io/Infinite-Scheduler/bookings.html
