@@ -153,6 +153,21 @@ cancelBookingButton.addEventListener('click', () => {
 
 
 
+// time stamp for export
+function getCurrentDateTime() {
+    const now = new Date();
+  
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+
 bookingDetailsForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -220,6 +235,8 @@ bookingDetailsForm.addEventListener('submit', (event) => {
     setTimeout(() => {
         confirmationMessage.style.display = 'none';
     }, 3000);
+
+    ExportDb()
 });
 
 
@@ -230,5 +247,30 @@ addExtraButton.addEventListener('click', () => {
         extraPerson2.style.display = 'block';
     }
 });
-
+// 
 // Load or initialize bookings (already in the code above)
+
+
+// Export the db as on booking db backup solution
+
+function ExportDb() {
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    const bookingsJSON = JSON.stringify(bookings);
+
+    const blob = new Blob([bookingsJSON], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+
+
+    const timestamp = getCurrentDateTime();
+
+
+    a.download = 'bookings-'+timestamp+'.json'
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Clean up
+}
+
